@@ -1,0 +1,20 @@
+{
+  "name": "starknet-fund-and-deploy-scripts",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Sepolia demos: fund a Starknet account before / while deploying it",
+  "scripts": {
+    "check": "node --check common.mjs && node --check counterfactual.mjs && node --check factory.mjs && node --check deploy-factory.mjs",
+    "counterfactual": "node counterfactual.mjs",
+    "factory": "node factory.mjs",
+    "deploy-factory": "node deploy-factory.mjs"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "starknet": "^7.6.4"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,0 +1,6 @@
+contracts/target/
+contracts/.snfoundry_cache/
+scripts/node_modules/
+scripts/.env
+*.log
+.DS_Store

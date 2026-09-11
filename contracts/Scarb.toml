@@ -1,0 +1,23 @@
+[package]
+name = "fund_and_deploy"
+version = "0.1.0"
+edition = "2024_07"
+description = "Deploy a Starknet account contract and fund it in the same transaction"
+license = "MIT"
+
+[dependencies]
+starknet = "2.9.2"
+
+[dev-dependencies]
+snforge_std = "0.36.0"
+assert_macros = "2.9.2"
+
+[[target.starknet-contract]]
+sierra = true
+casm = true
+
+[scripts]
+test = "snforge test"
+
+[tool.fmt]
+sort-module-level-items = true
