@@ -23,7 +23,7 @@ The trick that makes **B** identical to **A** for the resulting wallet: the fact
 ## Repository layout
 
 ```
-contracts/            Cairo package `fund_and_deploy` (Scarb + Starknet Foundry)
+contracts/            Cairo package `fund_and_deploy` (Scarb 2.20 + Starknet Foundry 0.63)
   src/lib.cairo       AccountFactory.fund_and_deploy(class_hash, salt, calldata, amount)
   src/mocks.cairo     MockAccount + MockERC20 used by the tests
   tests/              snforge test: one call -> account deployed AND funded

@@ -35,9 +35,7 @@ pub mod MockAccount {
 
 #[starknet::contract]
 pub mod MockERC20 {
-    use starknet::storage::{
-        Map, StorageMapReadAccess, StorageMapWriteAccess, StoragePathEntry,
-    };
+    use starknet::storage::{Map, StorageMapReadAccess, StorageMapWriteAccess};
     use starknet::{ContractAddress, get_caller_address};
 
     #[storage]
