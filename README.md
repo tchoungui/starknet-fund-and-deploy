@@ -26,7 +26,7 @@ The trick that makes **B** identical to **A** for the resulting wallet: the fact
 contracts/            Cairo package `fund_and_deploy` (Scarb 2.20 + Starknet Foundry 0.63)
   src/lib.cairo       AccountFactory.fund_and_deploy(class_hash, salt, calldata, amount)
   src/mocks.cairo     MockAccount + MockERC20 used by the tests
-  tests/              snforge test: one call -> account deployed AND funded
+  tests/              snforge: one call -> deployed AND funded; factory address == DEPLOY_ACCOUNT address
 scripts/              starknet.js (v7) demos against Sepolia
   counterfactual.mjs  Strategy A: compute address -> transfer STRK -> DEPLOY_ACCOUNT
   factory.mjs         Strategy B: approve + fund_and_deploy in ONE multicall

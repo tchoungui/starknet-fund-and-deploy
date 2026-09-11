@@ -61,14 +61,38 @@ fn same_inputs_give_same_address_only_once() {
     assert(a != b, 'salt must change the address');
 }
 
+/// Pedersen chain with the element count appended (StarkNet's compute_hash_on_elements).
+fn hash_elements(data: Span<felt252>) -> felt252 {
+    let mut h: felt252 = 0;
+    let mut i: usize = 0;
+    while i < data.len() {
+        h = core::pedersen::pedersen(h, *data.at(i));
+        i += 1;
+    };
+    core::pedersen::pedersen(h, data.len().into())
+}
+
+/// The address a DEPLOY_ACCOUNT transaction gives: deployer_address = 0.
+fn deploy_account_address(class_hash: starknet::ClassHash, salt: felt252, calldata: Span<felt252>) -> ContractAddress {
+    let elements = array![
+        'STARKNET_CONTRACT_ADDRESS', 0, salt, class_hash.into(), hash_elements(calldata),
+    ];
+    let h: u256 = hash_elements(elements.span()).into();
+    let addr_bound: u256 = 0x800000000000000000000000000000000000000000000000000000000000000 - 256; // 2**251 - 256
+    let reduced: felt252 = (h % addr_bound).try_into().unwrap();
+    reduced.try_into().unwrap()
+}
+
 #[test]
-#[should_panic]
-fn redeploying_the_same_address_fails() {
+fn factory_gives_the_same_address_as_deploy_account() {
     let (_token, factory, account_class, funder) = setup();
+    let calldata = array![0xAB, 0xCD].span();
+    let expected = deploy_account_address(account_class, 0x5A17, calldata);
     start_cheat_caller_address(factory, funder);
-    let dispatcher = IAccountFactoryDispatcher { contract_address: factory };
-    dispatcher.fund_and_deploy(account_class, 0x7, array![0x9].span(), 0);
-    dispatcher.fund_and_deploy(account_class, 0x7, array![0x9].span(), 0); // address already taken
+    let actual = IAccountFactoryDispatcher { contract_address: factory }
+        .fund_and_deploy(account_class, 0x5A17, calldata, 0);
+    stop_cheat_caller_address(factory);
+    assert(actual == expected, 'deploy_from_zero address');
 }
 
 #[test]
