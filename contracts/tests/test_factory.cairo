@@ -86,7 +86,7 @@ fn deploy_account_address(class_hash: starknet::ClassHash, salt: felt252, callda
 #[test]
 fn factory_gives_the_same_address_as_deploy_account() {
     let (_token, factory, account_class, funder) = setup();
-    let calldata = array![0xAB, 0xCD].span();
+    let calldata = array![0xAB].span(); // MockAccount constructor takes exactly one felt (public_key)
     let expected = deploy_account_address(account_class, 0x5A17, calldata);
     start_cheat_caller_address(factory, funder);
     let actual = IAccountFactoryDispatcher { contract_address: factory }
